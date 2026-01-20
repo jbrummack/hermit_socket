@@ -18,6 +18,7 @@ use std::net::SocketAddr;
     target_os = "windows",
     target_os = "cygwin",
 ))]*/
+pub use sockaddr::SockAddr;
 use std::time::Duration;
 use sys::c_int;
 pub mod sockaddr;
