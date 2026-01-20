@@ -85,23 +85,32 @@ impl Socket {
 
         system::poll_connect(self, timeout)
     }
-    //pub fn listen(&self, backlog: c_int) -> Result<()>
-    // pub fn accept(&self) -> Result<(Socket, SockAddr)>
-    // //pub fn accept_raw(&self) -> Result<(Socket, SockAddr)>
-    // pub fn local_addr(&self) -> Result<SockAddr>
-
-    /*pub fn peer_addr(&self) -> Result<SockAddr> {
-        unsafe { sys::getpeername(self.as_raw()) }
-    }*/
-
-    /*pub fn r#type(&self) -> Result<Type> {
-        unsafe { sys::getsockopt::<c_int>(self.as_raw(), sys::SOL_SOCKET, sys::SO_TYPE).map(Type) }
-    }*/
-
-    pub fn try_clone(&self) -> Result<Socket> {
-        //        sys::try_clone(self.as_raw()).map(Socket::from_raw)
-        todo!()
+    pub fn listen(&self, backlog: c_int) -> Result<()> {
+        system::listen(self.as_raw(), backlog)
     }
+    pub fn accept(&self) -> Result<(Socket, SockAddr)> {
+        let (socket, addr) = self.accept_raw()?;
+        let socket = set_common_accept_flags(socket)?;
+        Ok((socket, addr))
+    }
+    pub fn accept_raw(&self) -> Result<(Socket, SockAddr)> {
+        system::accept(self.as_raw()).map(|(inner, addr)| (Socket::from_raw(inner), addr))
+    }
+    pub fn local_addr(&self) -> Result<SockAddr> {
+        system::getsockname(self.as_raw())
+    }
+
+    pub fn peer_addr(&self) -> Result<SockAddr> {
+        unsafe { sys::getpeername(self.as_raw()) }
+    }
+
+    pub fn r#type(&self) -> Result<Type> {
+        unsafe { sys::getsockopt::<c_int>(self.as_raw(), sys::SOL_SOCKET, sys::SO_TYPE).map(Type) }
+    }
+
+    /*pub fn try_clone(&self) -> Result<Socket> {
+        system::try_clone(self.as_raw()).map(Socket::from_raw)
+    }*/
 
     pub fn nonblocking(&self) -> Result<bool> {
         system::nonblocking(self.as_raw())
