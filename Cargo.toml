@@ -1,0 +1,8 @@
+[package]
+name = "hermit_socket"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+hermit-abi = { version = "0.5.2", features = ["alloc", "core"] }
+smoltcp = "0.12.0"
