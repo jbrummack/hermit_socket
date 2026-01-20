@@ -101,12 +101,14 @@ impl Socket {
     }
 
     pub fn peer_addr(&self) -> Result<SockAddr> {
-        unsafe { sys::getpeername(self.as_raw()) }
+        unsafe { system::getpeername(self.as_raw()) }
     }
 
-    pub fn r#type(&self) -> Result<Type> {
-        unsafe { sys::getsockopt::<c_int>(self.as_raw(), sys::SOL_SOCKET, sys::SO_TYPE).map(Type) }
-    }
+    /*pub fn r#type(&self) -> Result<Type> {
+        unsafe {
+            system::getsockopt::<c_int>(self.as_raw(), sys::SOL_SOCKET, sys::SO_TYPE).map(Type)
+        }
+    }*/
 
     /*pub fn try_clone(&self) -> Result<Socket> {
         system::try_clone(self.as_raw()).map(Socket::from_raw)
