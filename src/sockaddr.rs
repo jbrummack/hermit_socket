@@ -266,7 +266,7 @@ impl SockAddr {
 impl std::fmt::Debug for SockAddr {
     fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut f = fmt.debug_struct("SockAddr");
-        #[cfg(any(
+        /*#[cfg(any(
             target_os = "dragonfly",
             target_os = "freebsd",
             target_os = "haiku",
@@ -284,7 +284,8 @@ impl std::fmt::Debug for SockAddr {
         f.field("ss_len", &self.storage.ss_len);
         f.field("ss_family", &self.storage.ss_family)
             .field("len", &self.len)
-            .finish()
+            .finish()*/
+        f.finish()
     }
 }
 
