@@ -91,14 +91,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "hermit_socket"
-version = "0.1.0"
-dependencies = [
- "hermit-abi",
- "smoltcp",
-]
-
-[[package]]
 name = "libc"
 version = "0.2.180"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -182,6 +174,14 @@ dependencies = [
  "libc",
  "log",
  "managed",
+]
+
+[[package]]
+name = "socket2"
+version = "0.1.0"
+dependencies = [
+ "hermit-abi",
+ "smoltcp",
 ]
 
 [[package]]
