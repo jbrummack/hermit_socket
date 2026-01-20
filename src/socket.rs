@@ -407,18 +407,30 @@ impl Socket {
 }
 
 ///Socket options for TCP sockets, get/set using IPPROTO_TCP.
-/// Doesnt do anything on hermit
+
 impl Socket {
     pub fn set_tcp_keepalive(&self, params: &TcpKeepalive) -> Result<()> {
-        //todo!()
+        //self.set_keepalive(true)?;
+        //system::set_tcp_keepalive(self.as_raw(), params);
         Ok(())
     }
-    /*pub fn tcp_nodelay(&self) -> Result<bool> {
+    pub fn tcp_nodelay(&self) -> Result<bool> {
+        /*unsafe {
+            system::getsockopt(self.as_raw(), sys::IPPROTO_TCP, sys::TCP_NODELAY)
+                .map(|nodelay| nodelay != false as bool)
+        }*/
         todo!()
-    }*/
-    /*pub fn set_tcp_nodelay(&self, nodelay: bool) -> Result<()> {
-        todo!()
-    }*/
+    }
+    pub fn set_tcp_nodelay(&self, nodelay: bool) -> Result<()> {
+        unsafe {
+            system::setsockopt(
+                self.as_raw(),
+                sys::IPPROTO_TCP,
+                sys::TCP_NODELAY,
+                nodelay as c_int,
+            )
+        }
+    }
 }
 /// Set `SOCK_CLOEXEC` and `NO_HANDLE_INHERIT` on the `ty`pe on platforms that
 /// support it.

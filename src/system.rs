@@ -334,7 +334,14 @@ pub(crate) fn nonblocking(fd: RawSocket) -> io::Result<bool> {
     //Ok((file_status_flags & sys::O_NONBLOCK) != 0)
     todo!()
 }
-
+fn into_secs(duration: Duration) -> c_int {
+    min(duration.as_secs(), c_int::MAX as u64) as c_int
+}
+//use sys::TCP_KEEPIDLE as KEEPALIVE_TIME;
+#[allow(unused_variables)]
+pub(crate) fn set_tcp_keepalive(fd: RawSocket, keepalive: &crate::TcpKeepalive) -> io::Result<()> {
+    Ok(())
+}
 /*fn fcntl_get(fd: RawSocket, cmd: c_int) -> io::Result<c_int> {
     syscall!(fcntl(fd, cmd))
 }
