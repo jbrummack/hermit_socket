@@ -317,6 +317,15 @@ impl Socket {
             )
         }
     }
+    pub fn tos_v4(&self) -> Result<u32> {
+        unsafe {
+            system::getsockopt(self.as_raw(), sys::IPPROTO_IP, sys::IP_TOS)
+                .map(|tos: u32| tos as u32)
+        }
+    }
+    pub fn set_tos_v4(&self, tos: u32) -> Result<()> {
+        unsafe { system::setsockopt(self.as_raw(), sys::IPPROTO_IP, sys::IP_TOS, tos as c_int) }
+    }
     /* Not supported in hermit
     pub fn multicast_if_v4(&self) -> Result<Ipv4Addr> {
         unsafe {
